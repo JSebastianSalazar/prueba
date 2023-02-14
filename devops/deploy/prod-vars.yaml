@@ -1,0 +1,46 @@
+#### Vars related to readiness and liveness ####
+health_check: 'on'
+# path from management.context-path defined on config server
+#health_path: "http://petstore.swagger.io/v1/actuator/health"
+health_path: "/actuator/health"
+# initial delay depends on app average startup time
+health_initialdelayseconds: 10
+health_timeoutseconds: 10
+health_periodSeconds: 30
+#### Vars related to readiness and liveness ####
+swagger_active: 'yes'
+azure_keyvault: 'no'
+include_hpa: 'yes'
+
+# Var related to squad name (no blank spaces). If value is not set, it will be project name defined in groovy file by default
+squad_name: ''
+
+# Extra JAVA_OPTS
+# extra_java_opts: "-Dlog4j.configuration=file:/opt/file/log4j.xml,-Dloader.path=/opt/file/"
+
+#map for ingress k8s
+ingress_map:
+  ingres1:
+    path: "prueba/"
+
+envs_infra:
+  - name: SERVER_PORT
+    value: '8080'
+
+port_container_insecure: 8080
+target_port_container_insecure: 8080
+port_health_management: 8080
+
+resources_plan:
+  cpu_limits: 2
+  cpu_requests: 40m
+  memory_limits: 1512M
+  memory_requests: 512M
+  target_average_cpu: 2400
+  target_average_memory: 98
+  jvm_xms: 512m
+  jvm_xmx: 768m
+
+replicas_plan:
+  min_replicas: 1
+  max_replicas: 4

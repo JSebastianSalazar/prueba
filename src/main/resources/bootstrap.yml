@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    kubernetes:
+      enabled: false
+  application:
+    name: prueba
+  main:
+    allow-bean-definition-overriding: on
+    lazy-initialization: on
+info:
+  project:
+    name: prueba
+    version: 1.0-SNAPSHOT
+
+server:
+  port: 9001
+

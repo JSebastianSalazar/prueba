@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.ncnp.adapters</groupId>
+    <artifactId>ncnp-spring-adapters-parent</artifactId>
+    <version>1.0.3</version>
+  </parent>
+
+  <groupId>com.peigo.services</groupId>
+  <artifactId>prueba</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Prueba</name>
+  <description>Prueba</description>
+
+  <properties>
+    <server.resource>petstore.swagger.io/v1</server.resource>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <base-package>com.peigo.services</base-package>
+    <start-class>${base-package}.OpenAPI2SpringBoot</start-class>
+    <openapi-generator.version>4.3.1</openapi-generator.version>
+    <asyncapi-package>com.peigo.services</asyncapi-package>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>gitlab-maven</id>
+      <url>https://gitlab.com/api/v4/groups/12270847/-/packages/maven</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gitlab-maven</id>
+      <url>https://gitlab.com/api/v4/groups/12270847/-/packages/maven</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <inceptionYear>2023</inceptionYear>
+
+  <organization>
+    <name>everis</name>
+    <url>http://www.everis.com</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>johan</id>
+      <name>johan</name>
+      <email>jsalazar@peigo.com.ec</email>
+      <organization>PeiGo</organization>
+      <timezone>America/Lima</timezone>
+      <roles>
+        <role>software-developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.ncnp.adapters</groupId>
+      <artifactId>ncnp-spring-adapters-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ncnp.adapters</groupId>
+      <artifactId>ncnp-spring-adapters-web-error</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- COMPONENTS -->
+
+
+
+
+
+
+    <!--Ncnp Support Cache Hazelcast Component -->
+    <dependency>
+      <groupId>com.ncnp.adapters</groupId>
+      <artifactId>ncnp-spring-adapters-cache-hazelcast</artifactId>
+    </dependency>
+
+
+    <!-- END COMPONENTS -->
+  </dependencies>
+
+  <build>
+    <defaultGoal>spring-boot:run</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator.version}</version>
+        <inherited>false</inherited>
+        <executions>
+          <execution>
+            <id>server-gen</id>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+              <generatorName>spring</generatorName>
+              <modelPackage>${base-package}.server.models</modelPackage>
+              <apiPackage>${base-package}.server</apiPackage>
+              <library>spring-boot</library>
+              <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>
+              <importMappings>ExceptionDetail=com.ncnp.core.adapter.error.exception.ExceptionDetail,
+                  ApiException=com.ncnp.core.adapter.error.exception.ApiException
+              </importMappings>
+              <configOptions>
+                  <sourceFolder>src/main/java</sourceFolder>
+                  <configPackage>${base-package}.config</configPackage>
+                  <dateLibrary>java8</dateLibrary>
+                  <useBeanValidation>true</useBeanValidation>
+                  <performBeanValidation>true</performBeanValidation>
+                  <openApiNullable>false</openApiNullable>
+                  <reactive>true</reactive>
+                  <apiFirst>false</apiFirst>
+                  <asyncNative>true</asyncNative>
+                  <delegatePattern>true</delegatePattern>
+                  <serializationLibrary>jackson</serializationLibrary>
+                  <basePackage>${base-package}</basePackage>
+                  <disallowAdditionalPropertiesIfNotPresent>true</disallowAdditionalPropertiesIfNotPresent>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.ncnp</groupId>
+            <artifactId>ncnp-openapi-generator</artifactId>
+            <version>0.1.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-generate-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>target/generated-sources/openapi/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+            <plugin>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+    </plugins>
+  </build>
+
+</project>
